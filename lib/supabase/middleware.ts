@@ -9,12 +9,12 @@ export async function updateSession(request: NextRequest) {
       },
     })
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+    let supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
 
-    if (!supabaseUrl || !supabaseKey) {
-      console.error('Missing Supabase Environment Variables!')
-      return supabaseResponse
+    supabaseUrl = supabaseUrl.trim()
+    if (!supabaseUrl.startsWith('http')) {
+      supabaseUrl = `https://${supabaseUrl}.supabase.co`
     }
 
     const supabase = createServerClient(
