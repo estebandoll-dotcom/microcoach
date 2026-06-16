@@ -41,6 +41,24 @@ export async function deleteActivityEntry(id: string) {
   if (error) throw new Error('Could not delete entry');
 
   revalidatePath('/history');
+  revalidatePath('/history');
   revalidatePath('/');
   revalidatePath('/stats');
+}
+
+export async function updateUserActivity(activityType: string, data: { daily_goal: number }) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
+
+  const { error } = await supabase
+    .from('user_activities')
+    .update({ daily_goal: data.daily_goal })
+    .eq('user_id', user.id)
+    .eq('activity_type', activityType);
+
+  if (error) throw new Error('Could not update profile');
+
+  revalidatePath('/settings');
+  revalidatePath('/');
 }

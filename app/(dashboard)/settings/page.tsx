@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { logout } from '@/lib/auth-actions'
-import { updateProfile } from '@/lib/actions'
+import { updateUserActivity } from '@/lib/actions'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,20 +34,20 @@ export default async function SettingsPage() {
           </form>
         </div>
 
-        <div className="bg-surface p-6 rounded-xl border border-border">
-          <h2 className="text-lg font-bold mb-4">Dagdoel</h2>
+        <div className="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800">
+          <h2 className="text-lg font-bold mb-4">Push-ups Dagdoel</h2>
           <form action={async (formData) => {
             'use server'
             const goal = parseInt(formData.get('daily_goal') as string)
-            await updateProfile({ daily_goal: goal })
+            await updateUserActivity('pushups', { daily_goal: goal })
           }} className="flex flex-col gap-3">
             <input 
               type="number" 
               name="daily_goal" 
-              defaultValue={profile?.daily_goal || 100}
+              defaultValue={100}
               min="1"
               max="5000"
-              className="bg-background border border-border rounded-md p-3 text-lg w-full focus:outline-none focus:border-primary"
+              className="bg-zinc-800 border-none rounded-xl p-3 text-lg w-full focus:outline-none focus:ring-2 focus:ring-primary text-white"
             />
             <button className="w-full bg-primary hover:bg-primaryHover text-white rounded-md px-4 py-3 font-bold transition-colors">
               Opslaan
