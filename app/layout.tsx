@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const outfit = Outfit({ subsets: ["latin"] });
@@ -30,7 +31,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="nl">
-      <body className={outfit.className}>{children}</body>
+      <body className={outfit.className}>
+        {children}
+        <Toaster theme="dark" position="top-center" richColors />
+      </body>
     </html>
   );
 }

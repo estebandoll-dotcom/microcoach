@@ -1,38 +1,66 @@
 'use client'
 
 import { useState } from 'react'
-import { addPushupSet } from '@/lib/actions'
+import { addActivityEntry } from '@/lib/actions'
 import { getTodayDateStr } from '@/lib/utils'
+import { toast } from 'sonner'
+import { Plus } from 'lucide-react'
 
-export function LogButtons() {
+export function LogButtons({ activityType }: { activityType: string }) {
   const [loading, setLoading] = useState(false)
+  const [customAmount, setCustomAmount] = useState('')
 
   const handleLog = async (amount: number) => {
-    if (loading) return
+    if (amount <= 0) return
     setLoading(true)
     try {
-      await addPushupSet({ amount, dateStr: getTodayDateStr() })
-      // Custom confetti or float animation could be added here
-    } catch (e) {
-      alert('Fout bij opslaan')
+      await addActivityEntry({
+        activityType,
+        amount,
+        dateStr: getTodayDateStr()
+      })
+      toast.success(`Bam! +${amount} in de pocket. 🔥`)
+      setCustomAmount('')
+    } catch (e: any) {
+      toast.error('Oeps, dat ging mis.')
     } finally {
       setLoading(false)
     }
   }
 
+  const isPushups = activityType === 'pushups'
+  const presetValues = isPushups ? [5, 10, 20] : [15, 30, 60]
+
   return (
-    <div className="mt-8 flex flex-col gap-4">
-      <div className="grid grid-cols-3 gap-4">
-        {[10, 20, 25].map(amt => (
+    <div className="flex flex-col gap-4 mt-8 px-4">
+      <div className="flex gap-4 justify-center">
+        {presetValues.map(val => (
           <button
-            key={amt}
-            onClick={() => handleLog(amt)}
+            key={val}
+            onClick={() => handleLog(val)}
             disabled={loading}
-            className="bg-surface hover:bg-border border border-border text-primary rounded-2xl py-4 text-xl font-bold transition-transform active:scale-95 disabled:opacity-50"
+            className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white text-lg font-bold py-4 rounded-xl transition-transform active:scale-95 disabled:opacity-50"
           >
-            +{amt}
+            +{val}
           </button>
         ))}
+      </div>
+      
+      <div className="flex gap-2 justify-center mt-2">
+        <input 
+          type="number" 
+          value={customAmount}
+          onChange={(e) => setCustomAmount(e.target.value)}
+          placeholder={isPushups ? "Ander aantal..." : "Aantal minuten..."}
+          className="bg-zinc-800 border-none rounded-xl px-4 py-3 text-white flex-1 focus:ring-2 focus:ring-primary outline-none"
+        />
+        <button 
+          onClick={() => handleLog(parseInt(customAmount) || 0)}
+          disabled={loading || !customAmount}
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-xl transition-transform active:scale-95 disabled:opacity-50 flex items-center justify-center"
+        >
+          <Plus className="w-5 h-5" />
+        </button>
       </div>
     </div>
   )
