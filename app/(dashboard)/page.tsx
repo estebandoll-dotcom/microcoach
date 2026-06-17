@@ -26,7 +26,8 @@ export default async function Dashboard({
     .eq('activity_type', activityType)
     .single()
     
-  const goal = activityConfig?.daily_goal || (activityType === 'walking' ? 30 : 100)
+  const defaultGoals: Record<string, number> = { pushups: 100, walking: 30, squats: 100, crunches: 100 }
+  const goal = activityConfig?.daily_goal || (defaultGoals[activityType] || 100)
   const currentStreak = activityConfig?.current_streak || 0
 
   // Fetch today's progress

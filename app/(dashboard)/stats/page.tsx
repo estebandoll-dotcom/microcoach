@@ -37,7 +37,7 @@ export default async function StatsPage({
   // Calculate Ranks
   let rankName = "Rookie"
   let nextRank = 500
-  if (activityType === 'pushups') {
+  if (activityType === 'pushups' || activityType === 'squats' || activityType === 'crunches') {
       if (totalReps >= 5000) rankName = "Machine"
       else if (totalReps >= 1000) rankName = "Builder"
       
@@ -82,7 +82,7 @@ export default async function StatsPage({
       <div className="bg-gradient-to-br from-primary/20 to-zinc-900 border border-primary/20 rounded-2xl p-6 text-center mb-6 mt-4">
         <Award className="w-12 h-12 text-primary mx-auto mb-3" />
         <h2 className="text-xl font-bold text-white mb-1">Rank: {rankName}</h2>
-        <p className="text-zinc-400 text-sm mb-4">Totaal: {totalReps} {activityType === 'pushups' ? 'stuks' : 'minuten'}</p>
+        <p className="text-zinc-400 text-sm mb-4">Totaal: {totalReps} {activityType === 'walking' ? 'minuten' : 'stuks'}</p>
         
         {totalReps < nextRank && (
           <div className="w-full bg-black/50 rounded-full h-2 mb-2">

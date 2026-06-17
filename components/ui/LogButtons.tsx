@@ -28,8 +28,8 @@ export function LogButtons({ activityType }: { activityType: string }) {
     }
   }
 
-  const isPushups = activityType === 'pushups'
-  const presetValues = isPushups ? [5, 10, 20] : [15, 30, 60]
+  const isWalking = activityType === 'walking'
+  const presetValues = isWalking ? [15, 30, 60] : [5, 10, 20]
 
   return (
     <div className="flex flex-col gap-4 mt-8 px-4">
@@ -51,7 +51,7 @@ export function LogButtons({ activityType }: { activityType: string }) {
           type="number" 
           value={customAmount}
           onChange={(e) => setCustomAmount(e.target.value)}
-          placeholder={isPushups ? "Ander aantal..." : "Aantal minuten..."}
+          placeholder={isWalking ? "Aantal minuten..." : "Ander aantal..."}
           className="bg-zinc-800 border-none rounded-xl px-4 py-3 text-white flex-1 focus:ring-2 focus:ring-primary outline-none"
         />
         <button 

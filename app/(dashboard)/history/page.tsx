@@ -29,7 +29,7 @@ export default async function HistoryPage() {
         {entries && entries.length > 0 ? entries.map(entry => (
           <div key={entry.id} className="flex items-center justify-between bg-zinc-900/50 p-4 rounded-xl border border-zinc-800">
             <div>
-              <p className="font-bold text-lg">+{entry.amount} {entry.activity_type === 'walking' ? 'Minuten wandelen' : 'Push-ups'}</p>
+              <p className="font-bold text-lg">+{entry.amount} {entry.activity_type === 'walking' ? 'Minuten wandelen' : entry.activity_type.charAt(0).toUpperCase() + entry.activity_type.slice(1)}</p>
               <p className="text-sm text-zinc-500">
                 {new Date(entry.logged_at).toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })} om {new Date(entry.logged_at).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
               </p>
